@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="./template.xhtml">
+
+        <ui:define name="title">My Guess Number</ui:define>
+        <ui:define name="head">My Guess Number</ui:define>
+        <ui:define name="content">
+            <h:form id="MainForm">
+                <div style="color: black; font-size:  24px;">
+                    <p> I ' thinking of a number from
+                        <span style="color: blue;">#{guessbean.minimum}</span>
+                        to
+                        <span style="color: blue;">#{guessbean.maximum}</span>
+                        You have
+                        <span style="color: blue;">#{ guessbean.remainingGuesses}</span>
+                        guesses.
+                    </p>
+                </div>
+                <h:panelGrid border="1" columns="5" style="font-size: 18px;">
+                    <h:outputLabel for="userguess" value="Number:"/>
+                    <h:inputText id="userguess" 
+                                 value="#{guessbean.userNumber}"
+                                 required="true" size="3"
+                                 disabled="#{guessbean.number eq guessbean.userNumber or guessbean.remainingGuesses le 0}"
+                                 validator="#{guessbean.validateNumberRange}"
+                                 />
+                    <h:commandButton id="submit" value="Guess"
+                                     action="#{guessbean.check}" 
+                                     disabled="#{guessbean.number eq guessbean.userNumber or guessbean.remainingGuesses le 0}"/>
+                    <h:commandButton id="reset" value="Reset"
+                                     action="#{guessbean.reset}" 
+                                     immediate="true" />                        
+                    <h:outputText   id="Higher" value="Higher"    
+                                    rendered="#{guessbean.number gt guessbean.userNumber and guessbean.userNumber ne 0 }"
+                                    style="color: #d20005" />
+                    <h:outputText   id="Lower" value="Lower"    
+                                    rendered="#{guessbean.number lt guessbean.userNumber and guessbean.userNumber ne 0 }"
+                                    style="color: #d20005" />            
+                </h:panelGrid>
+                <div style="color: #d20005; font-size: 14px;">
+                    <h:messages id="messages" globalOnly="false" />
+                </div>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+
+</html>
